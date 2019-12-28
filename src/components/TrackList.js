@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -17,6 +12,7 @@ class TrackList extends Component {
       tracks: []
     };
   }
+  linkRef = React.createRef();
   componentDidMount() {
     if (this.props.songName) {
       const proxy = "https://cors-anywhere.herokuapp.com/";
@@ -30,15 +26,20 @@ class TrackList extends Component {
         .catch(err => console.log(err));
     }
   }
+  simulateClick = ref => {
+    if (ref) {
+      ref.click();
+    }
+  };
   render() {
     const { songName } = this.props;
     let returnData = "";
     {
       !songName
         ? (returnData = (
-            <Router>
-              <Route path="*" render={() => <Redirect to="/home" />} />
-            </Router>
+            <React.Fragment>
+              <Link to={`home`} ref={this.simulateClick}></Link>
+            </React.Fragment>
           ))
         : (returnData = (
             <React.Fragment>
